@@ -1,0 +1,154 @@
+:root {
+  --clr-text: hsl(0, 0%, 100%);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+#recipes {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 60px 60px;
+}
+
+.recipe-container {
+  border-radius: 15px;
+  box-shadow: 0 4px 30px #0081C8;
+  backdrop-filter: blur(13px);
+  -webkit-backdrop-filter: blur(13px);
+  padding: 60px 0;
+  width: min(2000px, 100%);
+}
+
+.recipe-container > h1 {
+  font-size: 4rem;
+  font-weight: 600;
+  text-align: center;
+  color: #0081C8;
+  margin: 20px 0 40px;
+}
+
+.swiper {
+  width: 80%;
+  height: 100%;
+  margin-bottom: 30px;
+}
+
+.swiper-scrollbar {
+  --swiper-scrollbar-drag-bg-color: #0081C8;
+  --swiper-scrollbar-size: 5px;
+}
+
+.post {
+  position: relative;
+  max-width: 400px;
+  padding: 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--clr-text);
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  isolation: isolate;
+  text-align: center; /* Center text */
+}
+
+.post::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #0081C8;
+  border-radius: 10px;
+  box-shadow: 0 4px 30px #221722;
+  z-index: -1;
+}
+
+.post h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--clr-text);
+  margin-bottom: 2rem; /* Increased margin from 1rem to 2rem */
+}
+
+
+.post-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.post-body p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--clr-text);
+  margin-bottom: 1rem;
+}
+
+.post-avatar {
+  width: 40px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+/* MEDIA QUERIES */
+
+@media (max-width: 1200px) { 
+  .swiper {
+      width: 80%;
+  }
+}
+
+@media (max-width: 900px) {
+  #recipes {
+    padding: 60px 80px;
+  }
+
+  .swiper {
+    width: 50%;
+  }
+}
+
+@media (max-width: 765px) {
+  .swiper {
+    width: 70%;
+  }
+}
+
+@media (max-width: 550px) {
+  #recipes {
+    padding: 40px 40px;
+  }
+
+  .swiper {
+    width: 80%;
+  }
+}
+
+.swiper-slide:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 1; /* bring the hovered slide to the front */
+}
+
+.swiper-slide:hover .post {
+  background-color: rgba(0, 0, 0, 0.8); /* darken the background */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.swiper-slide:hover .post::before {
+  background-color: #0081C8; /* change the background color of the pseudo-element */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}

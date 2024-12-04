@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olympic Logo in Pure CSS</title>
+    <style>
+        
+        
+        .logo {
+  transform-style: preserve-3d;
+  width: 10vh;  /* Further reduced width */
+  height: 4.4vh;  /* Further reduced height */
+  position: relative;
+  margin: 15vh auto;
+}
+
+.ring {
+  width: 2.5vh;  /* Smaller width */
+  height: 2.5vh;  /* Smaller height */
+  border-radius: 50%;
+  border: solid blue 0.25vh;  /* Reduced border size */
+  position: absolute;
+  background: transparent;
+}
+
+.blue {
+  border-color: #0085c7;
+  transform: rotateX(-45deg) scaleY(1.4142);
+}
+
+.yellow {
+  border-color: #f4c300;
+  left: 1.75vh;  /* Adjusted left positioning */
+  top: 1.1vh;  /* Adjusted top positioning */
+  transform: rotateX(0deg);
+}
+
+.black {
+  border-color: black;
+  left: 3.5vh;  /* Adjusted left positioning */
+  transform: rotateX(45deg) scaleY(1.4142);
+}
+
+.green {
+  border-color: #009f3d;
+  top: 1.1vh;  /* Adjusted top positioning */
+  left: 5.25vh;  /* Adjusted left positioning */
+  transform: translateZ(0.625vh) rotateX(70deg) scaleY(2.9238);
+}
+
+.red {
+  border-color: #df0024;
+  left: 7vh;  /* Adjusted left positioning */
+  transform: translateZ(-1vh) rotateX(80deg) scaleY(5.7588);
+}
+
+
+
+
+
+    </style>
+</head>
+<body>
+
+    <div class="logo">
+        <div class="ring blue"></div>
+        <div class="ring yellow"></div>
+        <div class="ring black"></div>
+        <div class="ring green"></div>
+        <div class="ring red"></div>
+      </div>
+      
+
+</body>
+</html>

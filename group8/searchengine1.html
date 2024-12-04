@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olympic Themed Search Engine</title>
+    <style>
+        /* General Styles */
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(120deg, #34568B, #FF6F61, #6B5B95, #88B04B, #F7CAC9);
+    background-size: 300% 300%;
+    animation: subtleGradient 12s ease infinite;
+    color: white;
+}
+
+@keyframes subtleGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Sticky Search Bar */
+#searchContainer {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+}
+
+input[type="text"] {
+    width: 80%;
+    padding: 15px;
+    font-size: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 25px;
+    outline: none;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #333;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: gold;
+    transform: scale(1.1);
+}
+
+/* Results Section */
+#results {
+    margin-top: 20px;
+    padding: 0 10px;
+}
+
+.result {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.95);
+    color: black;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.result:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.result h3 {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.result p {
+    font-size: 0.95em;
+    margin: 10px 0 0;
+}
+
+        .result a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        .result a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="searchContainer">
+        <h1>Olympic Search Engine</h1>
+        <input type="text" id="searchInput" placeholder="Enter your Olympic query">
+        <button onclick="performSearch()">Search</button>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results"></div>
+
+    <script>
+        const apiKey = "b6f77b5bffmsh7a76ed6072dca08p15e73cjsnbbba44d2d05c"; // Replace with your RapidAPI key
+        const apiUrl = "https://google-search72.p.rapidapi.com/search";
+
+        async function performSearch() {
+            const query = document.getElementById("searchInput").value;
+            if (!query.trim()) {
+                alert("Please enter a search query.");
+                return;
+            }
+
+            const url = `${apiUrl}?query=${encodeURIComponent(query)}`;
+
+            try {
+                const resultsDiv = document.getElementById("results");
+                resultsDiv.innerHTML = "<p>Searching...</p>";
+
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "x-rapidapi-host": "google-search72.p.rapidapi.com",
+                        "x-rapidapi-key": apiKey
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                displayResults(data);
+            } catch (error) {
+                console.error("Error performing search:", error);
+                document.getElementById("results").innerHTML = `<p style="color:red;">An error occurred. Please try again.</p>`;
+            }
+        }
+
+        function displayResults(data) {
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = ""; // Clear previous results
+
+            if (data.items && data.items.length > 0) {
+                data.items.forEach(item => {
+                    const resultDiv = document.createElement("div");
+                    resultDiv.classList.add("result");
+
+                    resultDiv.innerHTML = `
+                        <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
+                        <p>${item.description || "No description available."}</p>
+                    `;
+
+                    resultsDiv.appendChild(resultDiv);
+                });
+            } else {
+                resultsDiv.innerHTML = "<p>No results found for your query.</p>";
+            }
+        }
+    </script>
+</body>
+</html>

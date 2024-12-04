@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olympics 2024 News</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        h1 {
+            font-family: Montserrat, sans-serif;
+        }
+
+        .carousel-container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fffafa;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .post-blogs {
+            margin: 10px;
+            padding: 20px;
+            width: 250px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.5s, opacity 0.5s;
+        }
+
+        .post-blogs img {
+            width: 100%;
+            border-radius: 10px;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .post-blogs:hover {
+            transform: scale(1.1);
+        }
+
+        .post-blogs .date-blogs {
+            font-family: Roboto, sans-serif;
+            color: #008080;
+            margin: 10px 0;
+        }
+
+        .post-blogs .post-content-blogs {
+            font-family: Open Sans, sans-serif;
+            font-weight: normal;
+        }
+
+        .post-blogs .post-content-blogs p {
+            margin-bottom: 20px;
+        }
+
+        .post-blogs a {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background-color: #008080;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .carousel-buttons {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .carousel-buttons button {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .carousel-buttons button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="carousel-container">
+        <div class="carousel-track" id="carousel-track">
+            <!-- Articles will be dynamically injected here -->
+        </div>
+        <div class="carousel-buttons">
+            <button id="prevButton">&#8249;</button>
+            <button id="nextButton">&#8250;</button>
+        </div>
+    </div>
+    <script>
+        const apiKey = '966137c25f7642f78e64d2302e4aa18e'; // Your NewsAPI key
+        const apiUrl = `https://newsapi.org/v2/everything?q=Olympics&sortBy=publishedAt&pageSize=10&apiKey=${apiKey}`;
+        const track = document.getElementById('carousel-track');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        let currentIndex = 0;
+
+        // Fetch articles from NewsAPI
+        async function fetchArticles() {
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+        const data = await response.json();
+        const articles = data.articles;
+
+        if (articles.length === 0) {
+            track.innerHTML = '<p>No articles found about Olympics 2024.</p>';
+            return;
+        }
+
+        articles.forEach(article => {
+            const postDiv = document.createElement('div');
+            postDiv.className = 'post-blogs';
+
+            postDiv.innerHTML = `
+                <img src="${article.urlToImage || 'https://via.placeholder.com/250x150'}" alt="Article Image">
+                <p class="date-blogs">${new Date(article.publishedAt).toDateString()}</p>
+                <h1>${article.title}</h1>
+                <div class="post-content-blogs">
+                    <p>${article.description || 'No description available.'}</p>
+                </div>
+                <a href="${article.url}" target="_blank">Read More</a>
+            `;
+
+            track.appendChild(postDiv);
+        });
+    } catch (error) {
+        console.error('Error fetching articles:', error);
+        track.innerHTML = '<p>Failed to load articles. Please try again later.</p>';
+    }
+}
+
+
+        // Carousel navigation logic
+        function updateCarousel() {
+            const posts = document.querySelectorAll('.post-blogs');
+            const postWidth = posts[0].offsetWidth + 20; // Include margin
+
+            nextButton.addEventListener('click', () => {
+                if (currentIndex < posts.length - 1) {
+                    currentIndex++;
+                    track.style.transform = `translateX(-${currentIndex * postWidth}px)`;
+                }
+            });
+
+            prevButton.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    track.style.transform = `translateX(-${currentIndex * postWidth}px)`;
+                }
+            });
+        }
+
+        // Initialize
+        fetchArticles().then(updateCarousel);
+    </script>
+</body>
+</html>
